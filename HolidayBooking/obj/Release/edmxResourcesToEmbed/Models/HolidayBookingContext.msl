@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="HolidayBookingModelStoreContainer" CdmEntityContainer="HolidayBookingEntities">
+    <EntitySetMapping Name="Employees">
+      <EntityTypeMapping TypeName="HolidayBookingModel.Employee">
+        <MappingFragment StoreEntitySet="Employee">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="EmpName" ColumnName="EmpName" />
+          <ScalarProperty Name="DateOfJoining" ColumnName="DateOfJoining" />
+          <ScalarProperty Name="HolidaysEntitled" ColumnName="HolidaysEntitled" />
+          <ScalarProperty Name="Dormant" ColumnName="Dormant" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EmployeeHolidays">
+      <EntityTypeMapping TypeName="HolidayBookingModel.EmployeeHoliday">
+        <MappingFragment StoreEntitySet="EmployeeHolidays">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+          <ScalarProperty Name="RemainingLeaves" ColumnName="RemainingLeaves" />
+          <ScalarProperty Name="HolidayBookedFrom" ColumnName="HolidayBookedFrom" />
+          <ScalarProperty Name="HolidayBookedTill" ColumnName="HolidayBookedTill" />
+          <ScalarProperty Name="Reason" ColumnName="Reason" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="AddEmployee" FunctionName="HolidayBookingModel.Store.AddEmployee" />
+    <FunctionImportMapping FunctionImportName="BookHoliday" FunctionName="HolidayBookingModel.Store.BookHoliday" />
+    <FunctionImportMapping FunctionImportName="GetRemainingLeaves" FunctionName="HolidayBookingModel.Store.GetRemainingLeaves" />
+    <FunctionImportMapping FunctionImportName="UpdateEmployee" FunctionName="HolidayBookingModel.Store.UpdateEmployee" />
+    <FunctionImportMapping FunctionImportName="GetEmployees" FunctionName="HolidayBookingModel.Store.GetEmployees">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="HolidayBookingModel.GetEmployees_Result">
+          <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+          <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+          <ScalarProperty Name="JoiningDate" ColumnName="JoiningDate" />
+          <ScalarProperty Name="HolidaysEntitled" ColumnName="HolidaysEntitled" />
+          <ScalarProperty Name="Dormant" ColumnName="Dormant" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetUpcomingHolidays" FunctionName="HolidayBookingModel.Store.GetUpcomingHolidays">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="HolidayBookingModel.GetUpcomingHolidays_Result">
+          <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+          <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+          <ScalarProperty Name="DateFrom" ColumnName="DateFrom" />
+          <ScalarProperty Name="DateTo" ColumnName="DateTo" />
+          <ScalarProperty Name="RemainingLeaves" ColumnName="RemainingLeaves" />
+          <ScalarProperty Name="Reason" ColumnName="Reason" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="HolidayBookingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EmpName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DateOfJoining" Type="DateTime" Precision="0" />
+    <Property Name="HolidaysEntitled" Type="Int32" />
+    <Property Name="Dormant" Type="Boolean" />
+    <NavigationProperty Name="EmployeeHolidays" Relationship="Self.FK__EmployeeH__EmpID__3F466844" FromRole="Employee" ToRole="EmployeeHolidays" />
+  </EntityType>
+  <EntityType Name="EmployeeHoliday">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EmpID" Type="Int32" Nullable="false" />
+    <Property Name="RemainingLeaves" Type="Int32" />
+    <Property Name="HolidayBookedFrom" Type="DateTime" Precision="0" />
+    <Property Name="HolidayBookedTill" Type="DateTime" Precision="0" />
+    <Property Name="Reason" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Employee" Relationship="Self.FK__EmployeeH__EmpID__3F466844" FromRole="EmployeeHolidays" ToRole="Employee" />
+  </EntityType>
+  <Association Name="FK__EmployeeH__EmpID__3F466844">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="EmployeeHolidays" Type="Self.EmployeeHoliday" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="EmployeeHolidays">
+        <PropertyRef Name="EmpID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="HolidayBookingEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Employees" EntityType="Self.Employee" />
+    <EntitySet Name="EmployeeHolidays" EntityType="Self.EmployeeHoliday" />
+    <AssociationSet Name="FK__EmployeeH__EmpID__3F466844" Association="Self.FK__EmployeeH__EmpID__3F466844">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="EmployeeHolidays" EntitySet="EmployeeHolidays" />
+    </AssociationSet>
+    <FunctionImport Name="AddEmployee" ReturnType="Collection(Decimal)">
+      <Parameter Name="EmpName" Mode="In" Type="String" />
+      <Parameter Name="DateOfJoining" Mode="In" Type="DateTime" />
+      <Parameter Name="HolidaysEntitled" Mode="In" Type="Int32" />
+      <Parameter Name="Dormant" Mode="In" Type="Boolean" />
+    </FunctionImport>
+    <FunctionImport Name="BookHoliday">
+      <Parameter Name="EmpID" Mode="In" Type="Int32" />
+      <Parameter Name="RemainingLeaves" Mode="In" Type="Int32" />
+      <Parameter Name="HolidayBookedFrom" Mode="In" Type="DateTime" />
+      <Parameter Name="HolidayBookedTill" Mode="In" Type="DateTime" />
+      <Parameter Name="Reason" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="GetRemainingLeaves" ReturnType="Collection(Int32)">
+      <Parameter Name="EmpID" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="UpdateEmployee">
+      <Parameter Name="EmpID" Mode="In" Type="Int32" />
+      <Parameter Name="Dormant" Mode="In" Type="Boolean" />
+    </FunctionImport>
+    <FunctionImport Name="GetEmployees" ReturnType="Collection(HolidayBookingModel.GetEmployees_Result)" />
+    <FunctionImport Name="GetUpcomingHolidays" ReturnType="Collection(HolidayBookingModel.GetUpcomingHolidays_Result)" />
+  </EntityContainer>
+  <ComplexType Name="GetEmployees_Result">
+    <Property Type="Int32" Name="EmployeeID" Nullable="false" />
+    <Property Type="String" Name="EmployeeName" Nullable="false" />
+    <Property Type="DateTime" Name="JoiningDate" Nullable="true" />
+    <Property Type="Int32" Name="HolidaysEntitled" Nullable="true" />
+    <Property Type="Boolean" Name="Dormant" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="GetUpcomingHolidays_Result">
+    <Property Type="Int32" Name="EmployeeID" Nullable="false" />
+    <Property Type="String" Name="EmployeeName" Nullable="false" />
+    <Property Type="DateTime" Name="DateFrom" Nullable="true" />
+    <Property Type="DateTime" Name="DateTo" Nullable="true" />
+    <Property Type="Int32" Name="RemainingLeaves" Nullable="true" />
+    <Property Type="String" Name="Reason" Nullable="true" />
+  </ComplexType>
+</Schema>

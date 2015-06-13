@@ -1,0 +1,235 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="HolidayBookingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmpName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="DateOfJoining" Type="date" />
+          <Property Name="HolidaysEntitled" Type="int" />
+          <Property Name="Dormant" Type="bit" />
+        </EntityType>
+        <EntityType Name="EmployeeHolidays">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmpID" Type="int" Nullable="false" />
+          <Property Name="RemainingLeaves" Type="int" />
+          <Property Name="HolidayBookedFrom" Type="date" />
+          <Property Name="HolidayBookedTill" Type="date" />
+          <Property Name="Reason" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="FK__EmployeeH__EmpID__3F466844">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EmployeeHolidays" Type="Self.EmployeeHolidays" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="EmployeeHolidays">
+              <PropertyRef Name="EmpID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="AddEmployee" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="crud">
+          <Parameter Name="EmpName" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="DateOfJoining" Type="date" Mode="In" />
+          <Parameter Name="HolidaysEntitled" Type="int" Mode="In" />
+          <Parameter Name="Dormant" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="BookHoliday" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="crud">
+          <Parameter Name="EmpID" Type="int" Mode="In" />
+          <Parameter Name="RemainingLeaves" Type="int" Mode="In" />
+          <Parameter Name="HolidayBookedFrom" Type="date" Mode="In" />
+          <Parameter Name="HolidayBookedTill" Type="date" Mode="In" />
+          <Parameter Name="Reason" Type="nvarchar(max)" Mode="In" />
+        </Function>
+        <Function Name="GetRemainingLeaves" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="crud">
+          <Parameter Name="EmpID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="UpdateEmployee" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="crud">
+          <Parameter Name="EmpID" Type="int" Mode="In" />
+          <Parameter Name="Dormant" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="GetEmployees" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="report" />
+        <Function Name="GetUpcomingHolidays" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="report" />
+        <EntityContainer Name="HolidayBookingModelStoreContainer">
+          <EntitySet Name="Employee" EntityType="Self.Employee" Schema="crud" store:Type="Tables" />
+          <EntitySet Name="EmployeeHolidays" EntityType="Self.EmployeeHolidays" Schema="crud" store:Type="Tables" />
+          <AssociationSet Name="FK__EmployeeH__EmpID__3F466844" Association="Self.FK__EmployeeH__EmpID__3F466844">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EmployeeHolidays" EntitySet="EmployeeHolidays" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="HolidayBookingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmpName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DateOfJoining" Type="DateTime" Precision="0" />
+          <Property Name="HolidaysEntitled" Type="Int32" />
+          <Property Name="Dormant" Type="Boolean" />
+          <NavigationProperty Name="EmployeeHolidays" Relationship="Self.FK__EmployeeH__EmpID__3F466844" FromRole="Employee" ToRole="EmployeeHolidays" />
+        </EntityType>
+        <EntityType Name="EmployeeHoliday">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmpID" Type="Int32" Nullable="false" />
+          <Property Name="RemainingLeaves" Type="Int32" />
+          <Property Name="HolidayBookedFrom" Type="DateTime" Precision="0" />
+          <Property Name="HolidayBookedTill" Type="DateTime" Precision="0" />
+          <Property Name="Reason" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK__EmployeeH__EmpID__3F466844" FromRole="EmployeeHolidays" ToRole="Employee" />
+        </EntityType>
+        <Association Name="FK__EmployeeH__EmpID__3F466844">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EmployeeHolidays" Type="Self.EmployeeHoliday" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="EmployeeHolidays">
+              <PropertyRef Name="EmpID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="HolidayBookingEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Employees" EntityType="Self.Employee" />
+          <EntitySet Name="EmployeeHolidays" EntityType="Self.EmployeeHoliday" />
+          <AssociationSet Name="FK__EmployeeH__EmpID__3F466844" Association="Self.FK__EmployeeH__EmpID__3F466844">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeeHolidays" EntitySet="EmployeeHolidays" />
+          </AssociationSet>
+          <FunctionImport Name="AddEmployee" ReturnType="Collection(Decimal)">
+            <Parameter Name="EmpName" Mode="In" Type="String" />
+            <Parameter Name="DateOfJoining" Mode="In" Type="DateTime" />
+            <Parameter Name="HolidaysEntitled" Mode="In" Type="Int32" />
+            <Parameter Name="Dormant" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="BookHoliday">
+            <Parameter Name="EmpID" Mode="In" Type="Int32" />
+            <Parameter Name="RemainingLeaves" Mode="In" Type="Int32" />
+            <Parameter Name="HolidayBookedFrom" Mode="In" Type="DateTime" />
+            <Parameter Name="HolidayBookedTill" Mode="In" Type="DateTime" />
+            <Parameter Name="Reason" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetRemainingLeaves" ReturnType="Collection(Int32)">
+            <Parameter Name="EmpID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateEmployee">
+            <Parameter Name="EmpID" Mode="In" Type="Int32" />
+            <Parameter Name="Dormant" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="GetEmployees" ReturnType="Collection(HolidayBookingModel.GetEmployees_Result)" />
+          <FunctionImport Name="GetUpcomingHolidays" ReturnType="Collection(HolidayBookingModel.GetUpcomingHolidays_Result)" />
+        </EntityContainer>
+        <ComplexType Name="GetEmployees_Result">
+          <Property Type="Int32" Name="EmployeeID" Nullable="false" />
+          <Property Type="String" Name="EmployeeName" Nullable="false" />
+          <Property Type="DateTime" Name="JoiningDate" Nullable="true" />
+          <Property Type="Int32" Name="HolidaysEntitled" Nullable="true" />
+          <Property Type="Boolean" Name="Dormant" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetUpcomingHolidays_Result">
+          <Property Type="Int32" Name="EmployeeID" Nullable="false" />
+          <Property Type="String" Name="EmployeeName" Nullable="false" />
+          <Property Type="DateTime" Name="DateFrom" Nullable="true" />
+          <Property Type="DateTime" Name="DateTo" Nullable="true" />
+          <Property Type="Int32" Name="RemainingLeaves" Nullable="true" />
+          <Property Type="String" Name="Reason" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="HolidayBookingModelStoreContainer" CdmEntityContainer="HolidayBookingEntities">
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="HolidayBookingModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="EmpName" ColumnName="EmpName" />
+                <ScalarProperty Name="DateOfJoining" ColumnName="DateOfJoining" />
+                <ScalarProperty Name="HolidaysEntitled" ColumnName="HolidaysEntitled" />
+                <ScalarProperty Name="Dormant" ColumnName="Dormant" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeHolidays">
+            <EntityTypeMapping TypeName="HolidayBookingModel.EmployeeHoliday">
+              <MappingFragment StoreEntitySet="EmployeeHolidays">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+                <ScalarProperty Name="RemainingLeaves" ColumnName="RemainingLeaves" />
+                <ScalarProperty Name="HolidayBookedFrom" ColumnName="HolidayBookedFrom" />
+                <ScalarProperty Name="HolidayBookedTill" ColumnName="HolidayBookedTill" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="AddEmployee" FunctionName="HolidayBookingModel.Store.AddEmployee" />
+          <FunctionImportMapping FunctionImportName="BookHoliday" FunctionName="HolidayBookingModel.Store.BookHoliday" />
+          <FunctionImportMapping FunctionImportName="GetRemainingLeaves" FunctionName="HolidayBookingModel.Store.GetRemainingLeaves" />
+          <FunctionImportMapping FunctionImportName="UpdateEmployee" FunctionName="HolidayBookingModel.Store.UpdateEmployee" />
+          <FunctionImportMapping FunctionImportName="GetEmployees" FunctionName="HolidayBookingModel.Store.GetEmployees">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="HolidayBookingModel.GetEmployees_Result">
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="JoiningDate" ColumnName="JoiningDate" />
+                <ScalarProperty Name="HolidaysEntitled" ColumnName="HolidaysEntitled" />
+                <ScalarProperty Name="Dormant" ColumnName="Dormant" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetUpcomingHolidays" FunctionName="HolidayBookingModel.Store.GetUpcomingHolidays">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="HolidayBookingModel.GetUpcomingHolidays_Result">
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="DateFrom" ColumnName="DateFrom" />
+                <ScalarProperty Name="DateTo" ColumnName="DateTo" />
+                <ScalarProperty Name="RemainingLeaves" ColumnName="RemainingLeaves" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
